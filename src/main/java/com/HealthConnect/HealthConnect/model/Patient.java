@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -49,11 +48,6 @@ public class Patient {
 
     @Enumerated(EnumType.STRING)
     private GenderType gender;
-
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Invalid email format")
-    @Column(unique = true)
-    private String email;
 
     @NotBlank(message = "Phone number cannot be blank")
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")

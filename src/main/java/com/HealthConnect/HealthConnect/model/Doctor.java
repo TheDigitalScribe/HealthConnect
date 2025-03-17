@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -42,11 +41,6 @@ public class Doctor {
     @NotBlank(message = "Specialization cannot be blank")
     @Size(max = 100, message = "Specialization must be less than 100 characters")
     private String specialization;
-
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Invalid email format")
-    @Column(unique = true)
-    private String email;
 
     @NotBlank(message = "Phone number cannot be blank")
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")

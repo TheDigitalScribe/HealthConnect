@@ -1,6 +1,7 @@
 package com.thedigitalscribe.HealthConnect.model;
 
 import com.thedigitalscribe.HealthConnect.enums.Gender;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,43 +11,54 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 public class Doctor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @NotBlank
+    @NotBlank(message = "First name cannot be blank")
+    @Column(nullable = false, length = 100)
     private String firstName;
 
+    @Column(length = 100)
     private String middleName;
 
-    @NotBlank
-    private String lastname;
+    @NotBlank(message = "Last name cannot be blank")
+    @Column(nullable = false, length = 100)
+    private String lastName;
 
-    @NotBlank
+    @NotBlank(message = "Specialization cannot be blank")
+    @Column(nullable = false, length = 150)
     private String specialization;
 
-    @NotBlank
-    @Pattern(regexp = "^[0-9]{10,15}$")
+    @NotBlank(message = "Phone number cannot be blank")
+    @Column(nullable = false, unique = true, length = 25)
     private String phoneNumber;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
+    @NotNull(message = "Gender must be specified")
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
     private Gender gender;
 
     @NotBlank
@@ -64,12 +76,28 @@ public class Doctor {
     @NotBlank
     private String country;
 
-    @NotNull
-    private LocalDate joiningDate;
+    @NotNull(message = "Joining date cannot be null")
+    @Column(nullable = false)
+    private OffsetDateTime joiningDate;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private OffsetDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor that = (Doctor) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? Objects.hash(id) : getClass().hashCode();
+    }
 }

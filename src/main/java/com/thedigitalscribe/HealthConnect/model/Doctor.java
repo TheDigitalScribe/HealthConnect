@@ -8,6 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +27,15 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
+@Table(indexes = {
+        @Index(columnList = "firstName"),
+        @Index(columnList = "lastName"),
+        @Index(columnList = "specialization"),
+        @Index(columnList = "city"),
+        @Index(columnList = "phoneNumber", unique = true),
+        @Index(columnList = "email", unique = true),
+        @Index(columnList = "active")
+})
 public class Doctor {
 
     @Id
@@ -75,6 +86,9 @@ public class Doctor {
 
     @NotBlank
     private String country;
+
+    @NotNull
+    private boolean active;
 
     @NotNull(message = "Joining date cannot be null")
     @Column(nullable = false)

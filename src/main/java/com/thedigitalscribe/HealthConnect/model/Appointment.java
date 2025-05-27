@@ -9,9 +9,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +29,14 @@ import java.util.UUID;
 @Setter
 @ToString(exclude = {"patient", "doctor"})
 @Entity
+@Table(indexes = {
+        @Index(columnList = "patient_id"),
+        @Index(columnList = "doctor_id"),
+        @Index(columnList = "appointmentDateTime"),
+        @Index(columnList = "appointmentStatus"),
+        @Index(columnList = "active"),
+        @Index(columnList = "createdAt")
+})
 public class Appointment {
 
     @Id
